@@ -57,7 +57,7 @@ weatherwise-ai/
 
 | Track | Members |
 |---|---|
-| ML / Models | You, Martina, Janet, Dennis |
+| ML / Models | Margaret, Martina, Janet, Dennis |
 | Visualization | Terry, Ann |
 | UI/UX (Streamlit) | Wilfred, Lorna |
 
