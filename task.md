@@ -10,27 +10,27 @@ Comprehensive task tracking list for **WeatherWise AI** (Hack the Weather 2026 H
 ## Task Checklist
 
 ### Phase 1: Architecture & Utilities Foundation
-- [ ] **Create `app/components/styling.py`**
-  - [ ] Implement custom CSS injection function (`inject_custom_css`)
-  - [ ] Style metric cards, alert badges (Critical, Warning, Advisory), glassmorphism cards
-  - [ ] Style chat message bubbles and sidebar navigation
-- [ ] **Create `app/components/sidebar.py`**
-  - [ ] Build unified Streamlit sidebar (`render_sidebar`)
-  - [ ] Add Trans Nzoia Sub-County selector (Kitale / Central, Endebess, Cherangany, Kwanza, Saboti) and broader Kenya counties
-  - [ ] Add Crop selector (Maize/Corn, Beans, Wheat, Potatoes, Vegetables)
-  - [ ] Add Growth Stage selector (Planting, Vegetative, Flowering/Tasseling, Maturation/Harvest)
-  - [ ] Add ML Model toggle selector (Random Forest Ensemble vs XGBoost Rainfall Model)
-  - [ ] Store configuration state in `st.session_state`
-- [ ] **Create `app/utils.py` (Core Bridge to Existing Codebase)**
-  - [ ] Wire up imports from `visualization.charts` (`plot_rainfall_trend`, `plot_drought_risk`, `plot_forecast_overview`, `compute_drought_risk`)
-  - [ ] Wire up imports from `visualization.map_data` (`build_county_map`, `generate_sample_county_weather`, `merge_weather_onto_counties`, `KENYA_COUNTY_CENTROIDS`)
-  - [ ] Implement exact advisory decision logic from `Notebooks/Recommendation engine.ipynb` (`planting_advisor`, `irrigation_advisor`, `fertilizer_advisor`, `spraying_advisor`, `disease_risk_advisor`, `crop_advisor`, `smart_alerts`, `generate_recommendations`)
-  - [ ] Implement `load_ml_models()` to load `models/rainfall_prediction_model.pkl` and `models/crop_recommendation_model.pkl` with graceful fallbacks
-  - [ ] Implement data loaders for real-time Trans Nzoia weather context and 7-day forecast data
-  - [ ] Implement AgriCopilot AI assistant engine (`generate_copilot_response`) with RAG context
-- [ ] **Phase 1 Verification & Commit**
-  - [ ] Write and run Phase 1 unit tests (`tests/test_app_utils.py` or `python -m pytest`)
-  - [ ] Perform Git commit: `"feat(app): implement core styling, sidebar, and utils bridge"`
+- [x] **Create `app/components/styling.py`**
+  - [x] Implement custom CSS injection function (`inject_custom_css`)
+  - [x] Style metric cards, alert badges (Critical, Warning, Advisory), glassmorphism cards
+  - [x] Style chat message bubbles and sidebar navigation
+- [x] **Create `app/components/sidebar.py`**
+  - [x] Build unified Streamlit sidebar (`render_sidebar`)
+  - [x] Add Trans Nzoia Sub-County selector (Kitale / Central, Endebess, Cherangany, Kwanza, Saboti) and broader Kenya counties
+  - [x] Add Crop selector (Maize/Corn, Beans, Wheat, Potatoes, Vegetables)
+  - [x] Add Growth Stage selector (Planting, Vegetative, Flowering/Tasseling, Maturation/Harvest)
+  - [x] Add ML Model toggle selector (Random Forest Ensemble vs XGBoost Rainfall Model)
+  - [x] Store configuration state in `st.session_state`
+- [x] **Create `app/utils.py` (Core Bridge to Existing Codebase)**
+  - [x] Wire up imports from `visualization.charts` (`plot_rainfall_trend`, `plot_drought_risk`, `plot_forecast_overview`, `compute_drought_risk`)
+  - [x] Wire up imports from `visualization.map_data` (`build_county_map`, `generate_sample_county_weather`, `merge_weather_onto_counties`, `KENYA_COUNTY_CENTROIDS`)
+  - [x] Implement exact advisory decision logic from `Notebooks/Recommendation engine.ipynb` (`planting_advisor`, `irrigation_advisor`, `fertilizer_advisor`, `spraying_advisor`, `disease_risk_advisor`, `crop_advisor`, `smart_alerts`, `generate_recommendations`)
+  - [x] Implement `load_ml_models()` to load `models/rainfall_prediction_model.pkl` and `models/crop_recommendation_model.pkl` with graceful fallbacks
+  - [x] Implement data loaders for real-time Trans Nzoia weather context and 7-day forecast data
+  - [x] Implement AgriCopilot AI assistant engine (`generate_copilot_response`) with RAG context
+- [x] **Phase 1 Verification & Commit**
+  - [x] Write and run Phase 1 unit tests (`tests/test_app_utils.py` or `python -m pytest`)
+  - [x] Perform Git commit: `"feat(app): implement core styling, sidebar, and utils bridge"`
 
 ---
 
