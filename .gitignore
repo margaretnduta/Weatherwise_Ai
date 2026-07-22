@@ -1,3 +1,4 @@
 .env
 Venv
 models/rainfall_prediction_model.pkl
+.ipynb_checkpoints/
