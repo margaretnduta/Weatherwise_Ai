@@ -144,24 +144,49 @@ with tab_map:
         "Interactive map visualizing rainfall distribution and drought risk across Trans Nzoia and Kenya counties."
     )
 
-    col_m1, col_m2 = st.columns([1, 4])
-    with col_m1:
-        map_metric = st.selectbox(
-            "Color Map By:",
-            options=["rainfall_mm", "drought_risk", "max_temp_c", "humidity_pct"],
-            index=0,
-            key="map_metric_select",
-        )
-        st.info(
-            "💡 **Map Tip**: Click markers to view detailed precipitation and drought classification for each county centroid."
-        )
+    map_engine = st.radio(
+        "Map Engine:",
+        options=["Folium Interactive Map (streamlit-folium)", "Plotly Spatial Scatter Map"],
+        index=0,
+        horizontal=True,
+        key="map_engine_select",
+    )
 
-    with col_m2:
-        sample_county_data = generate_sample_county_weather(seed=42)
-        
-        # Ensure selected sub-county is represented in dataset highlight
-        fig_map = build_county_map(sample_county_data, color_by=map_metric)
-        st.plotly_chart(fig_map, use_container_width=True)
+    if "Folium" in map_engine:
+        from app.utils import build_folium_county_map, HAS_FOLIUM
+        if HAS_FOLIUM:
+            from streamlit_folium import st_folium
+            folium_map = build_folium_county_map(location)
+            if folium_map:
+                st_folium(folium_map, width="100%", height=450)
+            else:
+                st.info("Displaying Plotly spatial map fallback.")
+                sample_county_data = generate_sample_county_weather(seed=42)
+                fig_map = build_county_map(sample_county_data, color_by="rainfall_mm")
+                st.plotly_chart(fig_map, use_container_width=True)
+        else:
+            st.info("Folium package not detected. Displaying Plotly spatial map.")
+            sample_county_data = generate_sample_county_weather(seed=42)
+            fig_map = build_county_map(sample_county_data, color_by="rainfall_mm")
+            st.plotly_chart(fig_map, use_container_width=True)
+    else:
+        col_m1, col_m2 = st.columns([1, 4])
+        with col_m1:
+            map_metric = st.selectbox(
+                "Color Map By:",
+                options=["rainfall_mm", "drought_risk", "max_temp_c", "humidity_pct"],
+                index=0,
+                key="map_metric_select",
+            )
+            st.info(
+                "💡 **Map Tip**: Click markers to view detailed precipitation and drought classification for each county centroid."
+            )
+
+        with col_m2:
+            sample_county_data = generate_sample_county_weather(seed=42)
+            fig_map = build_county_map(sample_county_data, color_by=map_metric)
+            st.plotly_chart(fig_map, use_container_width=True)
+
 
 # --- TAB 4: SOIL & CROP HEALTH METRICS ---
 with tab_soil:

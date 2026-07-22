@@ -15,6 +15,14 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 
+# Folium & Streamlit-Folium integration
+try:
+    import folium
+    from streamlit_folium import st_folium
+    HAS_FOLIUM = True
+except ImportError:
+    HAS_FOLIUM = False
+
 # Direct imports from existing codebase visualization module
 from visualization.charts import (
     compute_drought_risk,
@@ -295,7 +303,6 @@ def get_historical_weather_df(location: str, days: int = 60) -> pd.DataFrame:
         # Create seasonal pattern
         rain = round(max(0.0, rng.normal(8.0, 10.0)), 1) if rng.random() > 0.4 else 0.0
         max_t = round(24.0 + rng.uniform(-3, 3), 1)
-        min_t = round(max_t - 10.0, 1)
         rows.append(
             {
                 "Date": d,
@@ -306,6 +313,57 @@ def get_historical_weather_df(location: str, days: int = 60) -> pd.DataFrame:
             }
         )
     return pd.DataFrame(rows)
+
+
+def build_folium_county_map(selected_location: str):
+    """
+    Build interactive Folium map centered on Trans Nzoia County using folium & streamlit_folium.
+    """
+    if not HAS_FOLIUM:
+        return None
+
+    # Centroid for Trans Nzoia (Kitale: 1.0500, 34.9500)
+    trans_nzoia_coords = [1.0500, 34.9500]
+    
+    m = folium.Map(
+        location=trans_nzoia_coords,
+        zoom_start=10,
+        tiles="OpenStreetMap",
+        control_scale=True,
+    )
+
+    # Sub-county coordinates in Trans Nzoia
+    subcounties_coords = {
+        "Kitale (Central Trans Nzoia)": [1.0157, 35.0062, "Highland Maize Sector", "24.5°C", "12.5mm"],
+        "Endebess": [1.0772, 34.8481, "Volcanic Soil Belt (Mt. Elgon)", "23.8°C", "18.0mm"],
+        "Cherangany": [1.1333, 35.2500, "Cherangany Hills Watershed", "22.0°C", "22.4mm"],
+        "Kwanza": [1.1714, 34.9961, "Northern Grain Belt", "25.2°C", "8.2mm"],
+        "Saboti": [0.9333, 34.8167, "Tea & Maize Mixed Zone", "23.1°C", "15.0mm"],
+    }
+
+    for name, (lat, lon, desc, temp, rain) in subcounties_coords.items():
+        is_active = name in selected_location or selected_location in name
+        color = "green" if is_active else "blue"
+        icon_name = "star" if is_active else "cloud"
+
+        html_popup = f"""
+        <div style="font-family: Arial, sans-serif; width: 180px;">
+            <h4 style="margin: 0 0 6px 0; color: #0284C7;">{name.split(' ')[0]}</h4>
+            <p style="font-size: 0.82rem; margin: 0 0 4px 0; color: #475569;"><b>Zone</b>: {desc}</p>
+            <p style="font-size: 0.82rem; margin: 0 0 4px 0;"><b>Temp</b>: {temp}</p>
+            <p style="font-size: 0.82rem; margin: 0;"><b>Rain</b>: {rain}</p>
+        </div>
+        """
+        
+        folium.Marker(
+            location=[lat, lon],
+            popup=folium.Popup(html_popup, max_width=220),
+            tooltip=f"📍 {name}",
+            icon=folium.Icon(color=color, icon=icon_name),
+        ).add_to(m)
+
+    return m
+
 
 
 # ────────────────────────────────────────────────────────────────────────
